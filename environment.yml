@@ -1,0 +1,21 @@
+name: hot-day-moisture
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - pandas
+  - xarray>=2024.10.0     # needed for the zarr_format argument of to_zarr
+  - dask                  # lazy loading, open_mfdataset, dask.diagnostics
+  - zarr>=2.8.3,<3        # stores are written as zarr format 2
+  - numcodecs             # Blosc compressor
+  - netcdf4               # reading/writing .nc files (zlib encoding)
+  - scipy>=1.10           # stats.rankdata(nan_policy=...), stats.pearsonr
+  - matplotlib
+  - cartopy
+  - seaborn
+  - jupyterlab
+  - ipykernel
+  - pip
+  - pip:
+    - xarray-regrid       # conservative regridding in wave_vimd_utils.py
