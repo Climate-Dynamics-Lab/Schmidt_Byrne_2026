@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/home/users/lucalino/')
 import numpy as np
 import xarray as xr
 import xarray_regrid  # noqa: F401  (registers the .regrid accessor)

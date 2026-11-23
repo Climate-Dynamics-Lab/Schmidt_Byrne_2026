@@ -46,7 +46,6 @@ def get_global_attributes():
 derivatives_folder = "/gws/ssde/j25b/global_ex/lms47/data/era5_derivatives/"
 tropics_lat = slice(20, -20)
 
-
 # load data (exclude 2024 due to december hot days)
 extreme_dates_data_name = 'era5_hot_day_t2m_lead20_lag10_1980-2024.zarr' 
 dex = xr.open_zarr(derivatives_folder + extreme_dates_data_name, 

@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/home/users/lucalino/')
 import numpy as np
 import xarray as xr
 from utils import load_era5, get_compressor
@@ -7,12 +5,12 @@ import warnings
 from dask.array.core import PerformanceWarning
 warnings.filterwarnings('ignore', category=PerformanceWarning)
 
-######### SETTINGS for filling initialized zarr store (see bottom of script) with actual data ########
-start = 0
-end = start + 4
-######################################################################################################
+######### SETTINGS for gradually filling the initialized zarr store (see bottom of script) with actual data ########
+START = 0
+END = START + 4
+####################################################################################################################
 
-selected_year_range_store = slice(start,end)
+selected_year_range_store = slice(START,END)
 vars = ['tcc', 'msnswrf', 'msnlwrf', 'mslhf', 'msshf']
 tropics_lat = slice(20, -20)
 derivatives_folder = "/gws/ssde/j25b/global_ex/lms47/data/era5_derivatives/"

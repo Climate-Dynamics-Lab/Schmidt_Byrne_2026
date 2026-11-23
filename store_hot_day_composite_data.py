@@ -6,10 +6,10 @@ warnings.filterwarnings('ignore', category=PerformanceWarning)
 
 
 ####### SETTINGS ########
-doy_clim_comparison = True
-lead_time_window = slice(-4,-1) # time window over which to calculate mean drying/moistening
-epsilon = 0.0
-moistening_drying = True
+DOY_CLIM_COMPARISON = True
+LEAD_TIME_WINDOW = slice(-4,-1) # time window over which to calculate mean drying/moistening
+EPSILON = 0.0
+MOISTENING_DRYING = True
 #########################
 
 def add_doy_clim_variables(ds, vars=['tcwv', 'd_tcwv_dt', 't2m', 'q2m', 'mer', 'mvimd', 'mtpr']):
@@ -30,7 +30,7 @@ dex['qmvimd'].attrs = dex['mvimd'].attrs
 dex['qmvimd'].attrs['description'] = 'water vapour component, computed as a residual from mvimd - viiw - vilw'
 vars_to_nc = ['t2m', 'tcwv', 'd_tcwv_dt', 'q2m', 'mer', 'mvimd', 'mtpr', 'qmvimd']
 
-if doy_clim_comparison:
+if DOY_CLIM_COMPARISON:
     dex = add_doy_clim_variables(dex)
     vars_to_nc = ['t2m_diff_clim_abs', 'tcwv_diff_clim_abs', 'q2m_diff_clim_abs', 'mer_diff_clim_abs', 
                   'mvimd_diff_clim_abs', 'mtpr_diff_clim_abs', 'd_tcwv_dt_diff_clim_abs']
@@ -52,33 +52,33 @@ land = dex.lsm > land_thres
 ocean = dex.lsm < land_thres
 
 # mean drying versus moistening during lead days specified by lead_time_window 
-if moistening_drying:
-    neg_dq = (dex['d_tcwv_dt'].sel(lead_time=lead_time_window).mean('lead_time') < -epsilon).compute()
-    pos_dq = (dex['d_tcwv_dt'].sel(lead_time=lead_time_window).mean('lead_time') > epsilon).compute()
+if MOISTENING_DRYING:
+    neg_dq = (dex['d_tcwv_dt'].sel(lead_time=LEAD_TIME_WINDOW).mean('lead_time') < -EPSILON).compute()
+    pos_dq = (dex['d_tcwv_dt'].sel(lead_time=LEAD_TIME_WINDOW).mean('lead_time') > EPSILON).compute()
 
 # calculate area-weighted data for composite plots and store as netCDF files
 weights = np.cos(np.deg2rad(dex.latitude))
 
 dmoist_drying = dex[vars_to_nc].where(moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dmoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dmoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_drying_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 dsemimoist_drying = dex[vars_to_nc].where(semi_moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dsemimoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemimoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_drying_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 dsemiarid_drying = dex[vars_to_nc].where(semi_arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dsemiarid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemiarid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_drying_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 darid_drying = dex[vars_to_nc].where(arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-darid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+darid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_drying_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 dmoist_moistening = dex[vars_to_nc].where(moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dmoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dmoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_moistening_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 dsemimoist_moistening = dex[vars_to_nc].where(semi_moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dsemimoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemimoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_moistening_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 dsemiarid_moistening = dex[vars_to_nc].where(semi_arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-dsemiarid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemiarid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_moistening_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 darid_moistening = dex[vars_to_nc].where(arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-darid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+darid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_moistening_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 docean_drying = dex[vars_to_nc].where(ocean & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-docean_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+docean_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_drying_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 docean_moistening = dex[vars_to_nc].where(ocean & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-docean_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+docean_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_moistening_dqcrit=tcwv_epsilon=' + str(EPSILON) + clim_string + '.nc')
 
 
 # Composite data from all events used to gauge suitable lead_time_window for moistening/drying classification
