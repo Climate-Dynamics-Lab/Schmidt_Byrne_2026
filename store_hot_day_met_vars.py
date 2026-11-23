@@ -3,8 +3,6 @@ sys.path.append('/home/users/lucalino/')
 import numpy as np
 import xarray as xr
 from utils import load_era5, get_compressor
-from metpy.calc import lcl
-from metpy.units import units
 import warnings
 from dask.array.core import PerformanceWarning
 warnings.filterwarnings('ignore', category=PerformanceWarning)
