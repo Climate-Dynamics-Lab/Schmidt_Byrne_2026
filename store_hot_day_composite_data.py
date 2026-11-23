@@ -59,44 +59,37 @@ if moistening_drying:
 # calculate area-weighted data for composite plots and store as netCDF files
 weights = np.cos(np.deg2rad(dex.latitude))
 
-# dmoist_drying = dex[vars_to_nc].where(moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dmoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-# dsemimoist_drying = dex[vars_to_nc].where(semi_moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dsemimoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-
-# dsemiarid_drying = dex[vars_to_nc].where(semi_arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dsemiarid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-# darid_drying = dex[vars_to_nc].where(arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# darid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-
-# dmoist_moistening = dex[vars_to_nc].where(moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dmoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-# dsemimoist_moistening = dex[vars_to_nc].where(semi_moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dsemimoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-
-# dsemiarid_moistening = dex[vars_to_nc].where(semi_arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# dsemiarid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-# darid_moistening = dex[vars_to_nc].where(arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# darid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-
-# docean_drying = dex[vars_to_nc].where(ocean & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# docean_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
-# docean_moistening = dex[vars_to_nc].where(ocean & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
-# docean_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dmoist_drying = dex[vars_to_nc].where(moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dmoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemimoist_drying = dex[vars_to_nc].where(semi_moist & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dsemimoist_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemiarid_drying = dex[vars_to_nc].where(semi_arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dsemiarid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+darid_drying = dex[vars_to_nc].where(arid & land & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+darid_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dmoist_moistening = dex[vars_to_nc].where(moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dmoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemimoist_moistening = dex[vars_to_nc].where(semi_moist & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dsemimoist_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+dsemiarid_moistening = dex[vars_to_nc].where(semi_arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+dsemiarid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+darid_moistening = dex[vars_to_nc].where(arid & land & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+darid_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+docean_drying = dex[vars_to_nc].where(ocean & neg_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+docean_drying.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_drying_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
+docean_moistening = dex[vars_to_nc].where(ocean & pos_dq).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
+docean_moistening.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_moistening_dqcrit=tcwv_epsilon=' + str(epsilon) + clim_string + '.nc')
 
 
+# Composite data from all events used to gauge suitable lead_time_window for moistening/drying classification
 
 # dmoist_all_events = dex[vars_to_nc].where(moist & land).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
 # dmoist_all_events.to_netcdf(derivatives_folder + composite_folder + 'full_col_dmoist_all_events'+ clim_string + '.nc')
-
 # dsemimoist_all_events = dex[vars_to_nc].where(semi_moist & land).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
 # dsemimoist_all_events.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemimoist_all_events'+ clim_string + '.nc')
-
 # dsemiarid_all_events = dex[vars_to_nc].where(semi_arid & land).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
 # dsemiarid_all_events.to_netcdf(derivatives_folder + composite_folder + 'full_col_dsemiarid_all_events'+ clim_string + '.nc')
-
 # darid_all_events = dex[vars_to_nc].where(arid & land).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
 # darid_all_events.to_netcdf(derivatives_folder + composite_folder + 'full_col_darid_all_events'+ clim_string + '.nc')
-
 # docean_all_events = dex[vars_to_nc].where(ocean).weighted(weights).mean(dim = ['year', 'latitude', 'longitude'])
 # docean_all_events.to_netcdf(derivatives_folder + composite_folder + 'full_col_docean_all_events'+ clim_string + '.nc')
