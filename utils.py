@@ -28,90 +28,23 @@ def aridity_index_percentiles(ai_land):
     ai_percentile.attrs['units'] = '%'
     return ai_percentile
 
-def climatology_doy(da, time_dim_returned='time', mode='detrended'): # mode = 'detrended' or 'simple_mean'
-    """
-    Compute the climatology for each location and day of the year by fitting a linear trend to the full time series, 
-    and evaluating this trend at the respective day of the first year.
-    Parameters:
-    da (xarray.DataArray): Input DataArray with a time dimension.
-    Returns:
-    xarray.Dataset: Dataset containing one variable, named '<input_var>_clim' which contains the climatology of each day and location, repeated for all years.
-    """
+def climatology_doy(da, mode='simple_mean'):
     grouped = da.groupby("time.dayofyear")
-    # subtract 1 for consistency with dayofyear starting at 0 and ending at 365
-    time_doy_values = da.time.dt.dayofyear.values
-    if mode == 'detrended':
-        clim_list = []
-        time_dates = da.time
-
-        for day, group in grouped:
-            # fit linear trend
-            coefs = group.polyfit(dim="time", deg=1, skipna=True)
-
-            # evaluate the fit at each point in time
-            trend = xr.polyval(group["time"], coefs)
-
-            # extract climatology as the baseline value of the trend (use first time of the group)
-            t0 = group["time"].isel(time=0)
-            clim = trend.sel(time=t0)
-            # attach a dayofyear coordinate so concat produces a dayofyear axis (0-based)
-            clim = clim.expand_dims(dayofyear=[int(day)])
-            clim_list.append(clim)
-
-        # Concatenate climatology entries into a single DataArray indexed by dayofyear
-        climatology = xr.concat(clim_list, dim="dayofyear")
-        del climatology.coords["time"]
-        var_name = "polyfit_coefficients"
-    elif mode == 'simple_mean':
-        climatology = grouped.mean()
-    if time_dim_returned == 'time':
-        # select the climatology value for each original time using the dayofyear values
-        climatology = climatology.sel(dayofyear=time_doy_values)
-        # rename dimension dayofyear to time and assign original time coordinates
-        climatology = climatology.rename({"dayofyear": "time"})
-        climatology = climatology.assign_coords(time=time_dates)
-    elif time_dim_returned == 'doy':
-        pass  # keep dayofyear dimension
-    # name climatology variable and attach attributes
+    climatology = grouped.mean()
     var_name_clim = da.name + '_clim'
     long_name_string = f' (day-of-year climatology, {mode})'
-    if mode == 'detrended':
-        climatology = climatology.rename_vars({var_name:var_name_clim})
-        climatology[var_name_clim].attrs = da.attrs.copy()        
-        climatology[var_name_clim].attrs['long_name'] = climatology[var_name_clim].attrs['long_name'] + long_name_string
-        return climatology[var_name_clim]
-    elif mode == 'simple_mean':
-        climatology = climatology.rename(var_name_clim)
-        climatology.attrs['short_name'] = var_name_clim
-        climatology.attrs['long_name'] = climatology.attrs['long_name'] + long_name_string
-        return climatology
+    climatology = climatology.rename(var_name_clim)
+    climatology.attrs['short_name'] = var_name_clim
+    climatology.attrs['long_name'] = climatology.attrs['long_name'] + long_name_string
+    return climatology
 
 def extend_dayofyear_cyclic(ds, n):
     """
     Extend a dataset with cyclic boundary conditions on the dayofyear dimension.
     
     Prepends the last n days of the year (with adjusted dayofyear indices) and appends 
-    the first n days of the year (with adjusted dayofyear indices). This is useful for 
+    the first n days of the year (with adjusted dayofyear indices). This is needed for 
     preparing data for cyclic rolling operations.
-    
-    Parameters
-    ----------
-    ds : xr.Dataset or xr.DataArray
-        Input data with a 'dayofyear' dimension. Typically dayofyear ranges from 0 to 365.
-    n : int
-        Number of days to add at beginning and end
-        
-    Returns
-    -------
-    xr.Dataset or xr.DataArray
-        Extended dataset with dayofyear dimension now ranging from (-n) to (365+n)
-        depending on original size.
-        
-    Examples
-    --------
-    >>> # Original dayofyear: 0-365
-    >>> ds_extended = extend_dayofyear_cyclic(ds, n=15)
-    >>> # New dayofyear: -15 to 380
     """
       
     # Get original dayofyear values and size

@@ -64,6 +64,8 @@ dex['q2m'] = load_era5()['q2m'].sel(latitude = tropics_lat, time = dex.time)
 dex['mer'] = load_era5()['mer'].sel(latitude = tropics_lat, time = dex.time)
 dex['mtpr'] = load_era5()['mtpr'].sel(latitude = tropics_lat, time = dex.time)
 dex['mvimd'] = load_era5()['mvimd'].sel(latitude = tropics_lat, time = dex.time)
+dex['viiw'] = load_era5()['viiw'].sel(latitude=tropics_lat, time=dex.time)
+dex['vilw'] = load_era5()['vilw'].sel(latitude=tropics_lat, time=dex.time)
 
 # rechunk data and add global attributes
 dex = dex.chunk(get_chunks_dict(dex[var].dims for var in dex.variables))

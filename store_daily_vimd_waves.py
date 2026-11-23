@@ -8,9 +8,10 @@ For each day of YEAR, on the 1° wave grid:
 The divergence term (1/g) ∫ q ∇·v_wave dp is vimfd - vimadv (not stored).
 wave = 'era5_full' holds the same terms computed with the full (unfiltered) ERA5 winds.
 
-Usage:  python compute_daily_vimd.py [YEAR]     (default: $SLURM_ARRAY_TASK_ID)
+Usage:  python store_daily_vimd_waves.py [YEAR]     (default: $SLURM_ARRAY_TASK_ID)
 """
 import os
+import sys
 import dask
 import numpy as np
 import xarray as xr

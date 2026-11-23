@@ -23,7 +23,7 @@ years = np.unique(ds['time.year'].values).astype(int)
 
 # loop extracting hot days starting with 1980 and ending with 2024 
 # (lag days falling into 2025 are not available, so year 2024 gets removed later in another script)
-for y in years[1::]: 
+for y in years[(years >= 1980) & (years <= 2024)]: 
     # select data for this year
     ds_y = ds.sel(time=ds['time.year'] == y)
     if ds_y['time'].size == 0:
@@ -57,8 +57,8 @@ for y in years[1::]:
     # chunk per_year data and save to zarr store
     encoding = {v: {'compressor': numcodecs.Blosc("zstd", clevel=6)} for v in per_year.data_vars}
     per_year = per_year.chunk({'year':1, 'lead_time': lead_time_chunking, 'latitude':len(per_year.latitude), 'longitude':len(per_year.longitude)})
-    if y == years[1]:
-        per_year.to_zarr(zarr_store, mode='w', encoding=encoding, compute=True)
+    if y == 1980:
+        per_year.to_zarr(zarr_store, mode='w', zarr_format=2, encoding=encoding, compute=True)
     else:
         per_year.to_zarr(zarr_store, mode='a', append_dim='year', compute=True)
 

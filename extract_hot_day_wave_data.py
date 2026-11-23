@@ -4,7 +4,6 @@ Extract daily wave-filtered fields at each grid point's hot-day dates.
 Output (lead_time, year, latitude, longitude), plus a 'wave' dimension for the wave terms:
   mvimd, mvimd_anom (anomaly from the daily climatology), vimfd, vimadv, vimdiv (= vimfd - vimadv)
 """
-import os
 import xarray as xr
 from wave_vimd_utils import extract_events
 

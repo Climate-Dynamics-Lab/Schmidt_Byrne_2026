@@ -6,7 +6,7 @@ from dask.array.core import PerformanceWarning
 warnings.filterwarnings('ignore', category=PerformanceWarning)
 
 ######### SETTINGS for gradually filling the initialized zarr store (see bottom of script) with actual data ########
-START = 0
+START = 0                 # must be even
 END = START + 4
 ####################################################################################################################
 
@@ -77,7 +77,7 @@ dstore.attrs = get_global_attributes_metvars()
 # write data to store
 dstore.to_zarr(derivatives_folder + store_name, region=region, mode="a", compute=True)
 
-print(f'Years {start} to {end} finished.')
+print(f'Years {START} to {END} finished.')
 
 # ###### Code below executed once to initialize zarr store without writing actual data ########
 
