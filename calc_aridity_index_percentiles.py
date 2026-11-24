@@ -11,7 +11,6 @@ ds = load_era5()[['mtpr', 'msnlwrf', 'msnswrf', 'lsm']].sel(latitude = tropics_l
 ai = aridity_index(ds.msnlwrf, ds.msnswrf, ds.mtpr)
 ai_land = ai.where(ds.lsm > land_thres)
 ai_percentile = aridity_index_percentiles(ai_land)
-ai_percentile = ai_percentile.rename_vars({'__xarray_dataarray_variable__': 'ai_perc'})
 
 # save aridity index percentile dataarray to netcdf
 ai_percentile.to_netcdf(derivatives_folder + out_filename)
